@@ -34,6 +34,7 @@ Identify every place untrusted data enters: UART/USB/CAN/SPI/I2C/BLE/Wi-Fi/Ether
 **Concurrency / interrupts / RTOS**
 - Races between ISR and task on shared data (missing `volatile`/atomics/critical section; `volatile` is not atomicity); TOCTOU on buffers filled by DMA; non-reentrant functions in ISRs; blocking calls in ISR; priority inversion on security-relevant locks; check-then-use across context switches.
 - Buffer ownership handoff between ISR/DMA/task without clear lifetime.
+- Deadlock/livelock reachable by an external party (attacker-triggered lock contention or blocking waits = DoS); shared secrets/keys accessed without protection across contexts. General race/ordering correctness is covered by `embedded-bug-review` (`[CONC]`).
 
 **Crypto & secrets**
 - Hardcoded keys, passwords, tokens, certificates, default credentials; secrets in logs, in flash readable via debug port, in version control.

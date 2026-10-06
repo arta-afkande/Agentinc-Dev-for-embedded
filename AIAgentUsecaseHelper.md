@@ -14,7 +14,7 @@ For Claude Code, the agents and skills in `.claude/` of this repo implement thes
 |---|---|---|---|---|
 | `embedded-code-writer` | Implement features, fixes, refactors | read/write | `embedded-code-writing` | sonnet / medium / 20 |
 | `embedded-test-writer` | Write and run tests (host first, then HW/emulator) | read/write | `embedded-test-writing` | sonnet / high / 25 |
-| `embedded-code-reviewer` | Bugs, common mistakes, security, obsolete code | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review` | opus / high / 40 |
+| `embedded-code-reviewer` | Bugs, common mistakes, concurrency issues, security, obsolete code, best-practice suggestions | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review` | opus / high / 40 |
 | `embedded-security-auditor` | Security-only audit | read-only | `embedded-security-review` | opus / max / 40 |
 
 The last column is the starting configuration in each agent's frontmatter (`model`, `effort`, `maxTurns`). These are starting guesses: raise `maxTurns` if agents often stop with partial output, raise effort/model if results are shallow. There is no per-agent token cap in Claude Code; `maxTurns` is the only per-agent execution limit. Installed copies in a project keep their own values, so tune them there.
@@ -55,7 +55,7 @@ Suggested flow: **write code -> write tests -> review**. Security-sensitive chan
 - Bugs/common mistakes: undefined behavior, logic and tick-wraparound errors, leaks, ISR/`volatile`/race errors, register mistakes, error handling, state machines.
 - Security: trace untrusted input from entry points to sinks; memory safety, integer overflow, parsing, crypto and secrets, secure boot/OTA, debug interfaces, ISR/RTOS hazards.
 - Obsolete code: deprecated language/libc/vendor APIs, dead code (verified against the build graph, vector tables, linker scripts, callback tables), stale workarounds, EOL dependencies.
-- Findings ordered by severity, each with confidence, `file:line`, concrete failing scenario, and a fix; list assumptions and what was not reviewed. Tags: `[BUG]`, `[SEC]`, `[OBSOLETE]`.
+- Findings ordered by severity, each with confidence, `file:line`, concrete failing scenario, and a fix; list assumptions and what was not reviewed. Concurrency: map contexts and shared state, then check races, locking/deadlocks, memory ordering, ISR handoff, lifetimes. Tags: `[BUG]`, `[CONC]`, `[SEC]`, `[OBSOLETE]`, plus a separate `[BEST-PRACTICE]` suggestion list.
 
 ---
 

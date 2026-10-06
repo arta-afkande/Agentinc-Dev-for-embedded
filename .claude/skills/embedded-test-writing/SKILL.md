@@ -46,7 +46,7 @@ Never mix in a second framework without saying why.
 - Normal path, boundaries (0, 1, max, max+1), empty/full buffers, invalid and malformed input, every error return, every state-machine transition and illegal event/state, timeout paths.
 - Wraparound of counters/ticks, integer edge values, endianness for wire formats.
 - Resource handling: init/deinit, repeated init, failure midway (cleanup), no leaks (ASan/LSan on host).
-- Threaded code: deterministic tests for logic; separate stress tests (many threads, many iterations) under TSan; test ISR-to-task handoff via fakes that trigger the handler at controlled points.
+- Threaded code: target race/deadlock/ordering/lost-wakeup/lifetime scenarios, not just throughput; deterministic tests for logic; separate stress tests (many threads, many iterations) under TSan; test ISR-to-task handoff via fakes that trigger the handler at controlled points.
 - Security-relevant parsers: malformed/oversized/truncated inputs; add a fuzz harness (libFuzzer/AFL++) taking a byte buffer when the parser is a good fit.
 - Regression: when fixing a bug, write the failing test first and confirm it fails for the right reason.
 

@@ -21,6 +21,7 @@ Project-agnostic. Existing project conventions (naming, formatting, error style,
 - ISR-shared data: ISR-safe API variants only, bounded work, no blocking or allocation; hand off to a task via queue/flag.
 - Avoid holding locks across callbacks or blocking calls; consistent lock order; use timeouts on blocking waits where the platform allows; RAII lock guards in C++.
 - Document the threading contract only where non-obvious (e.g. "callable from ISR"). If a type is deliberately not thread-safe, say so in one line.
+- Before finishing concurrent code, self-check: every shared object has one named protection mechanism; consistent lock order; no lock held across callbacks/blocking calls; no check-then-act gap; correct memory ordering/barriers for flag-then-data handoffs; init/shutdown ordering safe; ISR work bounded.
 - If no threads are involved, don't add locking.
 
 **Comments**
@@ -35,6 +36,13 @@ Project-agnostic. Existing project conventions (naming, formatting, error style,
 - `const` correctness, `volatile` only for hardware/ISR-visible data (and not as synchronisation), `static` for internal linkage, narrow scopes, initialise at declaration.
 - C++: RAII, rule of zero, `enum class`, `constexpr`, `nullptr`, no hidden allocation or exceptions/RTTI where disabled; keep ISR code free of heavy C++ features.
 - Avoid banned/unsafe functions (`strcpy`, `sprintf`, `gets`); use bounded variants.
+
+## Best practices to apply
+- Make invalid states unrepresentable (enums, strong types, `static_assert` on size/layout); validate at module boundaries and trust internally.
+- Prefer simple, auditable designs over clever ones (a mutex over lock-free unless measured need).
+- Keep hardware access behind a thin HAL seam so logic is host-testable; inject time/clock sources.
+- Fail safe: defined behavior on every error path, bounded retries/timeouts, release resources on all exits.
+- Compile clean with strict warnings; run available static analysis/sanitizers.
 
 ## Workflow
 1. Read the surrounding code and match its style.

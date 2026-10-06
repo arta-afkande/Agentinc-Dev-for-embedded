@@ -12,7 +12,7 @@ Project-agnostic Claude Code skills and agents, meant to be reused as a template
     embedded-test-writing/SKILL.md      tests: host-first then HW/emulator, framework detection
     embedded-code-writing/SKILL.md      writing conventions: small units, thread-safe, minimal comments
   agents/
-    embedded-code-reviewer.md           bugs + security + obsolete code (uses three skills)
+    embedded-code-reviewer.md           bugs + concurrency + security + obsolete code + best practices (uses three skills)
     embedded-security-auditor.md        security only (uses embedded-security-review)
     embedded-test-writer.md             writes/runs tests (uses embedded-test-writing)
     embedded-code-writer.md             writes/modifies code (uses embedded-code-writing)
