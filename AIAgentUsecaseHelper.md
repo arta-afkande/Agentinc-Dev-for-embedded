@@ -10,12 +10,14 @@ For Claude Code, the agents and skills in `.claude/` of this repo implement thes
 
 ## 1. Available agents and skills (Claude Code)
 
-| Agent | Purpose | Access | Skills |
-|---|---|---|---|
-| `embedded-code-writer` | Implement features, fixes, refactors | read/write | `embedded-code-writing` |
-| `embedded-test-writer` | Write and run tests (host first, then HW/emulator) | read/write | `embedded-test-writing` |
-| `embedded-code-reviewer` | Bugs, common mistakes, security, obsolete code | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review` |
-| `embedded-security-auditor` | Security-only audit | read-only | `embedded-security-review` |
+| Agent | Purpose | Access | Skills | Model / effort / maxTurns |
+|---|---|---|---|---|
+| `embedded-code-writer` | Implement features, fixes, refactors | read/write | `embedded-code-writing` | sonnet / medium / 20 |
+| `embedded-test-writer` | Write and run tests (host first, then HW/emulator) | read/write | `embedded-test-writing` | sonnet / high / 25 |
+| `embedded-code-reviewer` | Bugs, common mistakes, security, obsolete code | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review` | opus / high / 40 |
+| `embedded-security-auditor` | Security-only audit | read-only | `embedded-security-review` | opus / max / 40 |
+
+The last column is the starting configuration in each agent's frontmatter (`model`, `effort`, `maxTurns`). These are starting guesses: raise `maxTurns` if agents often stop with partial output, raise effort/model if results are shallow. There is no per-agent token cap in Claude Code; `maxTurns` is the only per-agent execution limit. Installed copies in a project keep their own values, so tune them there.
 
 Suggested flow: **write code -> write tests -> review**. Security-sensitive changes (parsers, protocols, crypto, bootloader, update, privileged code) also go to the security auditor.
 

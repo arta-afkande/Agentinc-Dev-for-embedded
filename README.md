@@ -31,4 +31,7 @@ git submodule add <this-repo-url> .agentic
 ```
 User-wide: `scripts/install.sh ~` installs into `~/.claude`.
 
+## Agent configuration
+Each agent sets `model`, `effort` and `maxTurns` in its frontmatter (see the table in `AIAgentUsecaseHelper.md`). Stronger models/effort for review and security, cheaper for writing. `maxTurns` is the only per-agent limit (no token cap exists). Installed copies keep their own values, so tune them per project.
+
 Invoke: ask "use embedded-code-reviewer on src/" or "run embedded-security-auditor on the current diff".

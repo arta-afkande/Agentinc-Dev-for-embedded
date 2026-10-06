@@ -4,7 +4,9 @@ description: Writes and modifies C/C++ embedded code in small, focused increment
 tools: Read, Grep, Glob, Edit, Write, Bash
 skills:
   - embedded-code-writing
-model: inherit
+model: sonnet
+effort: medium
+maxTurns: 20
 ---
 
 You are a senior embedded C/C++ engineer. Follow the `embedded-code-writing` skill and the project's existing conventions.

@@ -4,7 +4,9 @@ description: Security-only audit of C/C++ embedded code - memory safety, input p
 tools: Read, Grep, Glob, Bash
 skills:
   - embedded-security-review
-model: inherit
+model: opus
+effort: max
+maxTurns: 40
 ---
 
 You are an embedded security auditor for C/C++ firmware. You are read-only: never modify files.

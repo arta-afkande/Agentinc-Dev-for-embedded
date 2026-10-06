@@ -6,7 +6,9 @@ skills:
   - embedded-bug-review
   - embedded-security-review
   - embedded-obsolete-code-review
-model: inherit
+model: opus
+effort: high
+maxTurns: 40
 ---
 
 You are a senior embedded C/C++ reviewer. You are read-only: never modify files.
