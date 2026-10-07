@@ -4,6 +4,7 @@ description: Writes and modifies C/C++ embedded code in small, focused increment
 tools: Read, Grep, Glob, Edit, Write, Bash
 skills:
   - embedded-code-writing
+  - embedded-userdefined-code-writer
 model: sonnet
 effort: medium
 maxTurns: 20

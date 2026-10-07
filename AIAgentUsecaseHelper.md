@@ -12,12 +12,14 @@ For Claude Code, the agents and skills in `.claude/` of this repo implement thes
 
 | Agent | Purpose | Access | Skills | Model / effort / maxTurns |
 |---|---|---|---|---|
-| `embedded-code-writer` | Implement features, fixes, refactors | read/write | `embedded-code-writing` | sonnet / medium / 20 |
-| `embedded-test-writer` | Write and run tests (host first, then HW/emulator) | read/write | `embedded-test-writing` | sonnet / high / 25 |
-| `embedded-code-reviewer` | Bugs, common mistakes, concurrency issues, security, obsolete code, best-practice suggestions | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review` | opus / high / 40 |
-| `embedded-security-auditor` | Security-only audit | read-only | `embedded-security-review` | opus / max / 40 |
+| `embedded-code-writer` | Implement features, fixes, refactors | read/write | `embedded-code-writing`, `embedded-userdefined-code-writer` | sonnet / medium / 20 |
+| `embedded-test-writer` | Write and run tests (host first, then HW/emulator) | read/write | `embedded-test-writing`, `embedded-userdefined-test-writer` | sonnet / high / 25 |
+| `embedded-code-reviewer` | Bugs, common mistakes, concurrency issues, security, obsolete code, best-practice suggestions | read-only (instruction-enforced; has Bash for analyzers) | `embedded-bug-review`, `embedded-security-review`, `embedded-obsolete-code-review`, `embedded-userdefined-code-reviewer` | opus / high / 40 |
+| `embedded-security-auditor` | Security-only audit | read-only | `embedded-security-review`, `embedded-userdefined-security-auditor` | opus / max / 40 |
 
-The last column is the starting configuration in each agent's frontmatter (`model`, `effort`, `maxTurns`). These are starting guesses: raise `maxTurns` if agents often stop with partial output, raise effort/model if results are shallow. There is no per-agent token cap in Claude Code; `maxTurns` is the only per-agent execution limit. Installed copies in a project keep their own values, so tune them there.
+The last column is the starting configuration in each agent's frontmatter (`model`, `effort`, `maxTurns`). These are starting guesses: raise `maxTurns` if agents often stop with partial output, raise effort/model if results are shallow. There is no per-agent token cap in Claude Code; `maxTurns` is the only per-agent execution limit. The installer overwrites agent files, so change values in this repo (or re-apply them after installing).
+
+The `embedded-userdefined-*` skills are empty placeholders for your own per-agent rules; the installer never overwrites them once present.
 
 Suggested flow: **write code -> write tests -> review**. Security-sensitive changes (parsers, protocols, crypto, bootloader, update, privileged code) also go to the security auditor.
 

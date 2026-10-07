@@ -6,6 +6,7 @@ skills:
   - embedded-bug-review
   - embedded-security-review
   - embedded-obsolete-code-review
+  - embedded-userdefined-code-reviewer
 model: opus
 effort: high
 maxTurns: 40

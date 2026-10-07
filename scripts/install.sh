@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-# Usage: scripts/install.sh <project-dir> [--link]
-# Copies (default) or symlinks each skill and agent into <project-dir>/.claude without touching existing ones.
-# Copy is the default because Claude Code does not reliably load symlinked skills.
+# Usage: scripts/install.sh <project-dir>
+# Copies each skill and agent into <project-dir>/.claude, replacing existing ones.
+# Skills named embedded-userdefined-* are never replaced if they already exist.
 set -euo pipefail
 
 src="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.claude"
-dest_root="${1:?usage: install.sh <project-dir> [--link]}"
-mode="${2:-}"
+dest_root="${1:?usage: install.sh <project-dir>}"
 dest="$dest_root/.claude"
 
 mkdir -p "$dest/skills" "$dest/agents"
@@ -14,14 +13,15 @@ mkdir -p "$dest/skills" "$dest/agents"
 place() {
   local from="$1" to="$2"
   if [ -e "$to" ] || [ -L "$to" ]; then
-    echo "skip (exists): $to"
-    return
+    case "$(basename "$to")" in
+      embedded-userdefined-*)
+        echo "skip (user-defined, exists): $to"
+        return
+        ;;
+    esac
+    rm -rf "$to"
   fi
-  if [ "$mode" = "--link" ]; then
-    ln -s "$(realpath --relative-to="$(dirname "$to")" "$from")" "$to"
-  else
-    cp -r "$from" "$to"
-  fi
+  cp -r "$from" "$to"
   echo "added: $to"
 }
 

@@ -4,6 +4,7 @@ description: Writes and runs tests for C/C++ embedded code - host-first, then em
 tools: Read, Grep, Glob, Edit, Write, Bash
 skills:
   - embedded-test-writing
+  - embedded-userdefined-test-writer
 model: sonnet
 effort: high
 maxTurns: 25
